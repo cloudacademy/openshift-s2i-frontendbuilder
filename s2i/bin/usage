@@ -1,0 +1,16 @@
+#!/bin/bash -e
+
+cat <<EOF
+This is the frontend nginx S2I image:
+To use it, install S2I: https://github.com/openshift/source-to-image
+
+Sample invocation:
+
+s2i build https://github.com/cloudacademy/openshift-voteapp-frontend-react cloudacademydevops/frontendbuilder cloudacademydevops/frontend
+
+You can then run the resulting image by using:
+docker run -e REACT_APP_APIHOSTPORT=xxxxxxxxxxxx --name frontend -p 8080:8080 cloudacademydevops/frontend
+
+For debugging use:
+docker run -e REACT_APP_APIHOSTPORT=xxxxxxxxxxxx -it --rm -p 8080:8080 cloudacademydevops/frontend bash
+EOF

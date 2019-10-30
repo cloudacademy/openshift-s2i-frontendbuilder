@@ -1,0 +1,10 @@
+#!/bin/bash -e
+#
+# S2I run script for the 'cloudacademydevops/frontendbuilder' image.
+# The run script executes the server that runs your application.
+#
+# For more information see the documentation:
+#  https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
+#
+
+exec /bin/bash -c 'cd /nginx/html && /tmp/src/env.sh && /usr/sbin/nginx -g "daemon off;"'
