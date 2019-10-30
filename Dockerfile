@@ -12,14 +12,16 @@ RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx
 
 # create a new doc root folder for serving owned by nginx
 RUN mkdir -p /nginx/html
-RUN chown -R nginx:nginx /nginx/html
+RUN touch /nginx/html/env-config.js
+RUN chmod a+rw /nginx/html/env-config.js
+RUN chown -R 1001:0 /nginx/html
 RUN sed -i.bak1 's/root\(.*\)\/usr\/share\/nginx\/html;/root \/nginx\/html;/' /etc/nginx/conf.d/default.conf
 
 # users are not allowed to listen on priviliged ports
 RUN sed -i.bak2 's/listen\(.*\)80;/listen 8080;/' /etc/nginx/conf.d/default.conf
 EXPOSE 8080
 
-# comment user directive as master process is run as user in OpenShift anyhow
+# comment user directive out as master process is run as user in openshift
 RUN sed -i.bak 's/^user/#user/' /etc/nginx/nginx.conf
 
 RUN addgroup nginx root
@@ -44,5 +46,6 @@ LABEL io.openshift.s2i.scripts-url=image:///usr/local/s2i
 # Copy the S2I scripts from ./.s2i/bin/ to /usr/local/s2i when making the builder image
 COPY ./s2i/bin/ /usr/local/s2i
 
-USER nginx
+#USER nginx
+USER 1001
 CMD ["/usr/libexec/s2i/usage"]
